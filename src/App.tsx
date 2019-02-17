@@ -26,13 +26,19 @@ const App = tsx.component({
           return this.left * this.right
         case Operator.divide:
           return this.left / this.right
+        default:
+          return 0
       }
     }
   },
   render(): VNode {
     return (
-      <Adder left={this.left} selectedOperator={Operator.divide} right={this.right}
-        onOperatorChange={this.operatorChanged}/>
+      <Adder left={this.left} selectedOperator={this.operator} right={this.right}
+        onOperatorChanged={this.operatorChanged}>
+          <div slot='result'>
+            {this.result}
+          </div>
+      </Adder>
     )
   },
   methods: {

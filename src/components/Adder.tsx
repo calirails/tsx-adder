@@ -4,7 +4,7 @@ import { VNode } from 'vue'
 import Operator from '@/types/operator';
 
 interface IEvents {
-  onOperatorChange: (op: Operator) => void
+  onOperatorChanged: (op: Operator) => void
 }
 
 interface IOperators {
@@ -50,7 +50,10 @@ interface IOperators {
           <div class="signs">
             {allowedOperators.map(operator =>
                 <span class={operator === selectedOperator ? 'selected sign' : 'sign'}
-                  onClick={() => this.$emit('onOperatorChange', operator)}
+                  onClick={() => {
+                    console.log(`Operator clicked: ${operator}`)
+                    this.$emit('operatorChanged', operator)
+                  }}
                 >
                   {operator}
                 </span>
