@@ -2,24 +2,43 @@ import * as tsx from 'vue-tsx-support'
 import { VNode } from 'vue'
 import { Adder } from './components/Adder'
 import Operator from './types/operator';
+import { IStoreCompositeState } from '@/store/index'
 
 const App = tsx.component({
   name: 'App',
-  data() {
-    return {
-      result: 0,
-      operator: Operator.multiply
+  computed: {
+    operator(): Operator {
+      return (this.$store.state as IStoreCompositeState).calculation.operator
+    },
+    left(): number {
+      return (this.$store.state as IStoreCompositeState).calculation.left
+    },
+    right(): number {
+      return (this.$store.state as IStoreCompositeState).calculation.right
+    },
+    result(): number {
+      switch (this.operator) {
+        case Operator.add:
+          return this.left + this.right
+        case Operator.subtract:
+          return this.left - this.right
+        case Operator.multiply:
+          return this.left * this.right
+        case Operator.divide:
+          return this.left / this.right
+      }
     }
   },
   render(): VNode {
     return (
-      <Adder left={3} selectedOperator={this.operator} right={4}
+      <Adder left={this.left} selectedOperator={Operator.divide} right={this.right}
         onOperatorChange={this.operatorChanged}/>
     )
   },
   methods: {
     operatorChanged(op: Operator) {
-      this.operator = op
+      this.$store.commit('calculation/SET_OPERATOR', op) // NOTE: no typechecking on .commit method here:(
+      console.log('calling $store.commit to run Update Operator mutation')
     }
   }
 })

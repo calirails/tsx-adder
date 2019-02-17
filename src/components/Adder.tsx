@@ -50,7 +50,8 @@ interface IOperators {
           <div class="signs">
             {allowedOperators.map(operator =>
                 <span class={operator === selectedOperator ? 'selected sign' : 'sign'}
-                            onClick={()=> this.$emit('changeOperator', operator)}>
+                  onClick={() => this.$emit('onOperatorChange', operator)}
+                >
                   {operator}
                 </span>
               )
